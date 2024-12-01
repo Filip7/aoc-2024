@@ -35,10 +35,10 @@ func initColumns(col1 *[]int, col2 *[]int, simil *map[int]int) {
 func totalDistance(col1 *[]int, col2 *[]int) int {
 	sum := 0
 	for i := range *col1 {
-		num1 := (*col1)[i]
-		num2 := (*col2)[i]
-		min := int(math.Min(float64(num1), float64(num2)))
-		max := int(math.Max(float64(num1), float64(num2)))
+		num1 := float64((*col1)[i])
+		num2 := float64((*col2)[i])
+		min := int(math.Min(num1, num2))
+		max := int(math.Max(num1, num2))
 
 		sum += max - min
 	}
