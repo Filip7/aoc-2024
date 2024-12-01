@@ -54,10 +54,7 @@ func totalDistance(col1 *[]int, col2 *[]int) int {
 
 func similarityScore(col2 *[]int, simil *map[int]int) {
 	for _, el := range *col2 {
-		_, exists := (*simil)[el]
-		if exists {
-			(*simil)[el] += 1
-		}
+		(*simil)[el] += 1
 	}
 }
 
