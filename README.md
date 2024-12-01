@@ -1,6 +1,6 @@
 # Advent of code 2024 🎄
 
-This [advent](https://adventofcode.com/2024) I'll try to participate in aoc.
+This advent I'll try to participate in [aoc](https://adventofcode.com/2024).
 
 My first ever.
 
