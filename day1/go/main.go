@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"sort"
 )
@@ -18,8 +19,7 @@ func initColumns(col1 *[]int, col2 *[]int, simil *map[int]int) {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		var num1 int
-		var num2 int
+		var num1, num2 int
 
 		fmt.Sscanf(scanner.Text(), "%d   %d", &num1, &num2)
 		*col1 = append(*col1, num1)
@@ -35,16 +35,10 @@ func initColumns(col1 *[]int, col2 *[]int, simil *map[int]int) {
 func totalDistance(col1 *[]int, col2 *[]int) int {
 	sum := 0
 	for i := range *col1 {
-		var max, min int
 		num1 := (*col1)[i]
 		num2 := (*col2)[i]
-		if num1 > num2 {
-			max = num1
-			min = num2
-		} else {
-			max = num2
-			min = num1
-		}
+		min := int(math.Min(float64(num1), float64(num2)))
+		max := int(math.Max(float64(num1), float64(num2)))
 
 		sum += max - min
 	}
@@ -58,6 +52,12 @@ func similarityScore(col2 *[]int, simil *map[int]int) {
 	}
 }
 
+func sortSlice(col *[]int) {
+	sort.Slice((*col), func(i, j int) bool {
+		return (*col)[i] < (*col)[j]
+	})
+}
+
 func printColumns(col1 *[]int, col2 *[]int) {
 	for i := range *col1 {
 		fmt.Println((*col1)[i], "   ", (*col2)[i])
@@ -67,21 +67,13 @@ func printColumns(col1 *[]int, col2 *[]int) {
 func main() {
 	fmt.Println("AOC 2024 - DAY 1")
 
-	var col1 []int
-	var col2 []int
+	var col1, col2 []int
 	simil := make(map[int]int)
 
 	initColumns(&col1, &col2, &simil)
 
-	sort.Slice(col1, func(i, j int) bool {
-		return col1[i] < col1[j]
-	})
-
-	sort.Slice(col2, func(i, j int) bool {
-		return col2[i] < col2[j]
-	})
-
-	// printColumns(&col1, &col2)
+	sortSlice(&col1)
+	sortSlice(&col2)
 
 	finalSum := totalDistance(&col1, &col2)
 
