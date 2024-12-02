@@ -12,8 +12,8 @@ import (
 )
 
 func handleInput(sliceOfSlices *[][]int) {
-	file, err := os.Open("../example.txt")
-	// file, err := os.Open("../data.txt")
+	// file, err := os.Open("../example.txt")
+	file, err := os.Open("../data.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -139,32 +139,35 @@ func calculateSafeLvlDampener(level *[]int, dampenerActive bool) int {
 }
 
 func dampenerCalc(level *[]int, iLvl int, jLvl int) int {
-	var result3 int
-	slice1 := make([]int, len(*level))
-	copy(slice1, *level)
+	shouldReturn1, returnValue1 := calc(level, iLvl, jLvl)
+	if shouldReturn1 {
+		return returnValue1
+	}
 
-	slice2 := make([]int, len(*level))
-	copy(slice2, *level)
-
-	slice3 := make([]int, len(*level))
-	copy(slice3, *level)
-
-	slice1 = slices.Delete(slice1, iLvl, jLvl)
-	result1 := calculateSafeLvlDampener(&slice1, true)
-
-	slice2 = slices.Delete(slice2, iLvl+1, jLvl+1)
-	result2 := calculateSafeLvlDampener(&slice2, true)
+	shouldReturn2, returnValue2 := calc(level, iLvl+1, jLvl+1)
+	if shouldReturn2 {
+		return returnValue2
+	}
 
 	if iLvl-1 >= 0 {
-		slice3 = slices.Delete(slice3, iLvl-1, jLvl-1)
-		result3 = calculateSafeLvlDampener(&slice3, true)
+		shouldReturn3, returnValue3 := calc(level, iLvl-1, jLvl-1)
+		if shouldReturn3 {
+			return returnValue3
+		}
 	}
 
-	if result1 == 1 || result2 == 1 || result3 == 1 {
-		return 1
-	} else {
-		return 0
+	return 0
+}
+
+func calc(level *[]int, i int, j int) (bool, int) {
+	slice := make([]int, len(*level))
+	copy(slice, *level)
+	slice = slices.Delete(slice, i, j)
+	res := calculateSafeLvlDampener(&slice, true)
+	if res == 1 {
+		return true, res
 	}
+	return false, 0
 }
 
 func main() {
