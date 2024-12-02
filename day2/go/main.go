@@ -111,7 +111,7 @@ func calculateSafeLvlDampener(level *[]int, dampenerActive bool) int {
 			localPlus = false
 		} else {
 			if !dampenerActive {
-				return newFunction(level, iLvl, jLvl)
+				return dampenerCalc(level, iLvl, jLvl)
 			}
 			break
 		}
@@ -121,7 +121,7 @@ func calculateSafeLvlDampener(level *[]int, dampenerActive bool) int {
 
 		if localPlus != plus {
 			if !dampenerActive {
-				return newFunction(level, iLvl, jLvl)
+				return dampenerCalc(level, iLvl, jLvl)
 			}
 			break
 		}
@@ -130,7 +130,7 @@ func calculateSafeLvlDampener(level *[]int, dampenerActive bool) int {
 
 		if absoluteResult < 1 || absoluteResult > 3 {
 			if !dampenerActive {
-				return newFunction(level, iLvl, jLvl)
+				return dampenerCalc(level, iLvl, jLvl)
 			}
 			break
 		}
@@ -138,7 +138,7 @@ func calculateSafeLvlDampener(level *[]int, dampenerActive bool) int {
 	return 0
 }
 
-func newFunction(level *[]int, iLvl int, jLvl int) int {
+func dampenerCalc(level *[]int, iLvl int, jLvl int) int {
 	var result3 int
 	slice1 := make([]int, len(*level))
 	copy(slice1, *level)
@@ -152,8 +152,8 @@ func newFunction(level *[]int, iLvl int, jLvl int) int {
 	slice1 = slices.Delete(slice1, iLvl, jLvl)
 	result1 := calculateSafeLvlDampener(&slice1, true)
 
-	result2 := calculateSafeLvlDampener(&slice2, true)
 	slice2 = slices.Delete(slice2, iLvl+1, jLvl+1)
+	result2 := calculateSafeLvlDampener(&slice2, true)
 
 	if iLvl-1 >= 0 {
 		slice3 = slices.Delete(slice3, iLvl-1, jLvl-1)
