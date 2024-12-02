@@ -9,7 +9,7 @@ import (
 	"sort"
 )
 
-func initColumns(col1 *[]int, col2 *[]int, simil *map[int]int) {
+func initColumns(col1 *[]int, col2 *[]int) {
 	file, err := os.Open("../example.txt")
 	// file, err := os.Open("../data.txt")
 	if err != nil {
@@ -20,11 +20,10 @@ func initColumns(col1 *[]int, col2 *[]int, simil *map[int]int) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		var num1, num2 int
-
 		fmt.Sscanf(scanner.Text(), "%d   %d", &num1, &num2)
+
 		*col1 = append(*col1, num1)
 		*col2 = append(*col2, num2)
-		(*simil)[num1] = 0
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -37,10 +36,7 @@ func totalDistanceAndSimilarity(col1 *[]int, col2 *[]int, simil *map[int]int) (i
 	for i, elem := range *col1 {
 		num1 := float64((*col1)[i])
 		num2 := float64((*col2)[i])
-		min := int(math.Min(num1, num2))
-		max := int(math.Max(num1, num2))
-
-		totalDistance += max - min
+		totalDistance += int(math.Abs(num1 - num2))
 
 		val, exists := (*simil)[elem]
 		if exists {
@@ -57,12 +53,6 @@ func similarityScore(col2 *[]int, simil *map[int]int) {
 	}
 }
 
-func sortSlice(col *[]int) {
-	sort.Slice((*col), func(i, j int) bool {
-		return (*col)[i] < (*col)[j]
-	})
-}
-
 func printColumns(col1 *[]int, col2 *[]int) {
 	for i := range *col1 {
 		fmt.Println((*col1)[i], "   ", (*col2)[i])
@@ -75,10 +65,9 @@ func main() {
 	var col1, col2 []int
 	simil := make(map[int]int)
 
-	initColumns(&col1, &col2, &simil)
-
-	sortSlice(&col1)
-	sortSlice(&col2)
+	initColumns(&col1, &col2)
+	sort.Ints(col1)
+	sort.Ints(col2)
 
 	similarityScore(&col2, &simil)
 
