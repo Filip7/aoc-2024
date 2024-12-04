@@ -12,8 +12,8 @@ import (
 )
 
 func handleInput(sliceOfSlices *[][]int) {
-	// file, err := os.Open("../example.txt")
-	file, err := os.Open("../data.txt")
+	file, err := os.Open("day2/example.txt")
+	// file, err := os.Open("day2/data.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

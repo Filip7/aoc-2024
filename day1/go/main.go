@@ -10,8 +10,8 @@ import (
 )
 
 func initColumns(col1 *[]int, col2 *[]int) {
-	file, err := os.Open("../example.txt")
-	// file, err := os.Open("../data.txt")
+	file, err := os.Open("day1/example.txt")
+	// file, err := os.Open("day1/data.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -22,8 +22,8 @@ const (
 )
 
 func parseFile(matrix *[][]string) {
-	file, err := os.Open("../example.txt")
-	// file, err := os.Open("../data.txt")
+	file, err := os.Open("day4/example.txt")
+	// file, err := os.Open("day4/data.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
