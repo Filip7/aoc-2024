@@ -17,4 +17,7 @@ test-all:
 		cd $${name} && echo "Test $${name}" && go test ; cd ../../ ; echo "\n" ; \
 	done
 
+init:
+	mkdir day${DAY} && cp -r template/ day${DAY} && echo "Done, day ${DAY} prepared"
+
 

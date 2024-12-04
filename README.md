@@ -6,6 +6,11 @@ My first ever.
 
 Wish me luck!
 
+## Initialize a day
+
+To init a day simply run `make init DAY={day number}`,
+this will prepare everything needed.
+
 ## How to run puzzle solutions[^1]
 
 All commands below are to be run from repo root.
