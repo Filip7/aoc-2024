@@ -10,12 +10,10 @@ import (
 )
 
 // https://regex101.com/ <- life saver
-func parseFile() string {
+func parseFile(filePath string) string {
 	var lines []string
 
-	file, err := os.Open("day3/example2.txt")
-	// file, err := os.Open("day3/example.txt")
-	// file, err := os.Open("day3/data.txt")
+	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,7 +64,7 @@ func caluclateResult(match []string) int {
 func main() {
 	fmt.Println("AOC 2024 - DAY 3")
 
-	line := parseFile()
+	line := parseFile("day3/data.txt")
 	resAll := handleAllMulInputs(line)
 	resDoAndDont := handleDoAndDontMulInputs(line)
 

@@ -11,9 +11,8 @@ import (
 	"strings"
 )
 
-func handleInput(sliceOfSlices *[][]int) {
-	file, err := os.Open("day2/example.txt")
-	// file, err := os.Open("day2/data.txt")
+func handleInput(sliceOfSlices *[][]int, filePath string) {
+	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -173,7 +172,7 @@ func calc(level *[]int, i int, j int) (bool, int) {
 func main() {
 	fmt.Println("AOC 2024 - DAY 2")
 	sliceOfSlices := make([][]int, 0)
-	handleInput(&sliceOfSlices)
+	handleInput(&sliceOfSlices, "day2/data.txt")
 
 	safeLevels := safeLevelsCountNoDampener(&sliceOfSlices)
 	safeLevelsDampener := safeLevelsCountWITHDampener(&sliceOfSlices)

@@ -9,9 +9,8 @@ import (
 	"sort"
 )
 
-func initColumns(col1 *[]int, col2 *[]int) {
-	file, err := os.Open("day1/example.txt")
-	// file, err := os.Open("day1/data.txt")
+func initColumns(col1 *[]int, col2 *[]int, filePath string) {
+	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -65,7 +64,7 @@ func main() {
 	var col1, col2 []int
 	simil := make(map[int]int)
 
-	initColumns(&col1, &col2)
+	initColumns(&col1, &col2, "day1/data.txt")
 	sort.Ints(col1)
 	sort.Ints(col2)
 

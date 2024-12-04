@@ -21,9 +21,8 @@ const (
 	NW
 )
 
-func parseFile(matrix *[][]string) {
-	file, err := os.Open("day4/example.txt")
-	// file, err := os.Open("day4/data.txt")
+func parseFile(matrix *[][]string, filePath string) {
+	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -140,7 +139,7 @@ func main() {
 	fmt.Println("AOC 2024 - DAY 4")
 
 	matrix := make([][]string, 0)
-	parseFile(&matrix)
+	parseFile(&matrix, "day4/example.txt")
 	xmasNum, masNum := searchXMAS(&matrix)
 
 	fmt.Println("XMAS apears: ", xmasNum)
