@@ -70,13 +70,10 @@ func validate(curPos int, page *[]int, rule *[]int) bool {
 }
 
 func checkPages(rules *map[int][]int, pages *[][]int) (int, int) {
-	sum := 0
-	sumInc := 0
-	correctPages := make([][]int, 0)
-	incorrectPages := make([][]int, 0)
-	pSize := len(*pages)
+	sum, sumInc := 0, 0
+	correctPages, incorrectPages := make([][]int, 0), make([][]int, 0)
 
-	for i := 0; i < pSize; i++ {
+	for i := 0; i < len(*pages); i++ {
 		shouldAdd := false
 		page := (*pages)[i]
 		for j, el := range page {
@@ -102,8 +99,7 @@ func checkPages(rules *map[int][]int, pages *[][]int) (int, int) {
 
 	for _, page := range incorrectPages {
 		slices.SortFunc(page, func(i, j int) int {
-			idx := slices.IndexFunc((*rules)[i], func(s int) bool { return s == j })
-			return idx
+			return slices.IndexFunc((*rules)[i], func(s int) bool { return s == j })
 		})
 		mid := len(page) / 2
 		sumInc += page[mid]
