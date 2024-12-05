@@ -15,5 +15,6 @@ func file(filePath string) {
 }
 
 func main() {
-	fmt.Println("AOC 2024 - DAY ")
+	fmt.Println("AOC 2024 - DAY X")
+	file("dayX/data.txt")
 }

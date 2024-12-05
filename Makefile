@@ -18,6 +18,9 @@ test-all:
 	done
 
 init:
-	mkdir day${DAY} && cp -r template/ day${DAY} && echo "Done, day ${DAY} prepared"
+	mkdir day${DAY} && \
+	cp -r template/* day${DAY} && \
+	sed -i 's/X/${DAY}/g' day${DAY}/go/main.go && \
+	echo "Done, day ${DAY} prepared"
 
 
