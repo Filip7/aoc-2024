@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func file(filePath string) {
+func readFile(filePath string) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
@@ -16,5 +16,5 @@ func file(filePath string) {
 
 func main() {
 	fmt.Println("AOC 2024 - DAY X")
-	file("dayX/data.txt")
+	readFile("dayX/data.txt")
 }
