@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"slices"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -102,9 +101,9 @@ func checkPages(rules *map[int][]int, pages *[][]int) (int, int) {
 	}
 
 	for _, page := range incorrectPages {
-		sort.Slice(page, func(i, j int) bool {
-			idx := slices.IndexFunc((*rules)[page[i]], func(s int) bool { return s == page[j] })
-			return idx != -1
+		slices.SortFunc(page, func(i, j int) int {
+			idx := slices.IndexFunc((*rules)[i], func(s int) bool { return s == j })
+			return idx
 		})
 		mid := len(page) / 2
 		sumInc += page[mid]
