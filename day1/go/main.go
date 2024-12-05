@@ -21,8 +21,7 @@ func initColumns(col1 *[]int, col2 *[]int, filePath string) {
 		var num1, num2 int
 		fmt.Sscanf(scanner.Text(), "%d   %d", &num1, &num2)
 
-		*col1 = append(*col1, num1)
-		*col2 = append(*col2, num2)
+		*col1, *col2 = append(*col1, num1), append(*col2, num2)
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -33,8 +32,7 @@ func initColumns(col1 *[]int, col2 *[]int, filePath string) {
 func totalDistanceAndSimilarity(col1 *[]int, col2 *[]int, simil *map[int]int) (int, int) {
 	totalDistance, similarity := 0, 0
 	for i, elem := range *col1 {
-		num1 := float64((*col1)[i])
-		num2 := float64((*col2)[i])
+		num1, num2 := float64((*col1)[i]), float64((*col2)[i])
 		totalDistance += int(math.Abs(num1 - num2))
 
 		val, exists := (*simil)[elem]
