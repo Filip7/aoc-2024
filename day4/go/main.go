@@ -39,29 +39,21 @@ func getNextRowAndCol(direction Direction, curRow int, curCol int) (int, int) {
 	nextRow, nextCol := -1, -1
 	switch direction {
 	case N:
-		nextRow = curRow - 1
-		nextCol = curCol
+		nextRow, nextCol = curRow-1, curCol
 	case NE:
-		nextRow = curRow - 1
-		nextCol = curCol + 1
+		nextRow, nextCol = curRow-1, curCol+1
 	case E:
-		nextRow = curRow
-		nextCol = curCol + 1
+		nextRow, nextCol = curRow, curCol+1
 	case SE:
-		nextRow = curRow + 1
-		nextCol = curCol + 1
+		nextRow, nextCol = curRow+1, curCol+1
 	case S:
-		nextRow = curRow + 1
-		nextCol = curCol
+		nextRow, nextCol = curRow+1, curCol
 	case SW:
-		nextRow = curRow + 1
-		nextCol = curCol - 1
+		nextRow, nextCol = curRow+1, curCol-1
 	case W:
-		nextRow = curRow
-		nextCol = curCol - 1
+		nextRow, nextCol = curRow, curCol-1
 	case NW:
-		nextRow = curRow - 1
-		nextCol = curCol - 1
+		nextRow, nextCol = curRow-1, curCol-1
 	}
 	return nextRow, nextCol
 }
@@ -114,7 +106,7 @@ func searchXMAS(matrix *[][]string) (int, int) {
 	for row := 0; row < numRow; row++ {
 		for col := 0; col < numCol; col++ {
 			if (*matrix)[row][col] == "X" {
-				for i := 0; i <= 7; i++ {
+				for i := N; i <= NW; i++ {
 					found := searchXmas(matrix, row, col, "M", Direction(i))
 					if found {
 						xmasCount++
