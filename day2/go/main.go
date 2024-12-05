@@ -51,10 +51,10 @@ func safeLevelsCountNoDampener(sliceOfSlices *[][]int) int {
 				positive += 1
 				break
 			}
-			firstLvl := level[iLvl]
-			secondLvl := level[jLvl]
 
+			firstLvl, secondLvl := level[iLvl], level[jLvl]
 			result := firstLvl - secondLvl
+
 			if result > 0 {
 				localPlus = true
 			} else if result < 0 {
@@ -100,10 +100,10 @@ func calculateSafeLvlDampener(level *[]int, dampenerActive bool) int {
 		if iLvl == len(*level)-1 {
 			return 1
 		}
-		firstLvl := (*level)[iLvl]
-		secondLvl := (*level)[jLvl]
 
+		firstLvl, secondLvl := (*level)[iLvl], (*level)[jLvl]
 		result := firstLvl - secondLvl
+
 		if result > 0 {
 			localPlus = true
 		} else if result < 0 {
@@ -138,6 +138,13 @@ func calculateSafeLvlDampener(level *[]int, dampenerActive bool) int {
 }
 
 func dampenerCalc(level *[]int, iLvl int, jLvl int) int {
+	if iLvl-1 >= 0 {
+		shouldReturn3, returnValue3 := calc(level, iLvl-1, jLvl-1)
+		if shouldReturn3 {
+			return returnValue3
+		}
+	}
+
 	shouldReturn1, returnValue1 := calc(level, iLvl, jLvl)
 	if shouldReturn1 {
 		return returnValue1
@@ -146,13 +153,6 @@ func dampenerCalc(level *[]int, iLvl int, jLvl int) int {
 	shouldReturn2, returnValue2 := calc(level, iLvl+1, jLvl+1)
 	if shouldReturn2 {
 		return returnValue2
-	}
-
-	if iLvl-1 >= 0 {
-		shouldReturn3, returnValue3 := calc(level, iLvl-1, jLvl-1)
-		if shouldReturn3 {
-			return returnValue3
-		}
 	}
 
 	return 0
