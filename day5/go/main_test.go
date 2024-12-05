@@ -7,7 +7,7 @@ import (
 func Test(t *testing.T) {
 	rules := make(map[int][]int)
 	pages := make([][]int, 0)
-	file(&rules, &pages, "../example.txt")
+	readFile(&rules, &pages, "../example.txt")
 
 	sum, sumInc := checkPages(&rules, &pages)
 

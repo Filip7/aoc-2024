@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func file(rules *map[int][]int, pages *[][]int, filePath string) {
+func readFile(rules *map[int][]int, pages *[][]int, filePath string) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
@@ -42,12 +42,10 @@ func file(rules *map[int][]int, pages *[][]int, filePath string) {
 }
 
 func validate(curPos int, page *[]int, rule *[]int) bool {
-	isGood1 := true
-	isGood2 := true
-
-	for k := range *page {
-		sEl := (*page)[k]
-		if sEl == (*page)[curPos] {
+	isStartOk, isEndOk := true, true
+	for i := range *page {
+		searchEl := (*page)[i]
+		if searchEl == (*page)[curPos] {
 			continue
 		}
 
@@ -55,25 +53,21 @@ func validate(curPos int, page *[]int, rule *[]int) bool {
 			break
 		}
 
-		idx := slices.IndexFunc(*rule, func(s int) bool { return s == sEl })
-		if k < curPos {
-			if idx == -1 {
-				isGood1 = true
-			} else {
-				isGood1 = false
+		idx := slices.IndexFunc(*rule, func(s int) bool { return s == searchEl })
+		if i < curPos {
+			isStartOk = idx == -1
+			if !isStartOk {
 				break
 			}
-		} else if k > curPos {
-			if idx != -1 {
-				isGood2 = true
-			} else {
-				isGood2 = false
+		} else if i > curPos {
+			isEndOk = idx != -1
+			if !isEndOk {
 				break
 			}
 		}
 	}
 
-	return isGood1 && isGood2
+	return isStartOk && isEndOk
 }
 
 func checkPages(rules *map[int][]int, pages *[][]int) (int, int) {
@@ -124,7 +118,7 @@ func main() {
 
 	rules := make(map[int][]int)
 	pages := make([][]int, 0)
-	file(&rules, &pages, "day5/data.txt")
+	readFile(&rules, &pages, "day5/data.txt")
 	sum, sumInc := checkPages(&rules, &pages)
 
 	fmt.Println("Sum is: ", sum, " sum of incorrect: ", sumInc)
