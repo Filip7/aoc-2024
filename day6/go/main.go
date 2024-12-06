@@ -113,8 +113,6 @@ func countSteps(matrix *[][]string, firstPos Position) int {
 }
 
 func searchForLoop(matrix *[][]string, firstPos Position, obstacle Position) bool {
-	walked := map[Position]bool{}
-	walked[firstPos] = true
 	direction := Direction(N)
 	xSize, ySize := len(*(matrix)), len((*matrix)[0])
 
@@ -142,7 +140,6 @@ func searchForLoop(matrix *[][]string, firstPos Position, obstacle Position) boo
 			been[curPos] = append(been[curPos], direction)
 		}
 
-		walked[nextPos] = true
 		curPos = nextPos
 	}
 
