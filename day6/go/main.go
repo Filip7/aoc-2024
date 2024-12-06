@@ -14,7 +14,7 @@ type Position struct {
 	y int
 }
 
-func (pos1 Position) equal(pos2 Position) bool {
+func (pos1 Position) equals(pos2 Position) bool {
 	return pos1.x == pos2.x && pos1.y == pos2.y
 }
 
@@ -26,6 +26,36 @@ const (
 	S
 	W
 )
+
+func (direction Direction) getNextPos(pos Position) Position {
+	nextX, nextY := -1, -1
+	switch direction {
+	case N:
+		nextX, nextY = pos.x-1, pos.y
+	case E:
+		nextX, nextY = pos.x, pos.y+1
+	case S:
+		nextX, nextY = pos.x+1, pos.y
+	case W:
+		nextX, nextY = pos.x, pos.y-1
+	}
+	return Position{nextX, nextY}
+}
+
+func (curDir Direction) changeDir() Direction {
+	switch curDir {
+	case N:
+		return E
+	case E:
+		return S
+	case S:
+		return W
+	case W:
+		return N
+	}
+
+	return -1
+}
 
 func readFile(matrix *[][]string, filePath string) Position {
 	var guardPos Position
@@ -53,36 +83,6 @@ func readFile(matrix *[][]string, filePath string) Position {
 	return guardPos
 }
 
-func getNextPos(direction Direction, pos Position) Position {
-	nextX, nextY := -1, -1
-	switch direction {
-	case N:
-		nextX, nextY = pos.x-1, pos.y
-	case E:
-		nextX, nextY = pos.x, pos.y+1
-	case S:
-		nextX, nextY = pos.x+1, pos.y
-	case W:
-		nextX, nextY = pos.x, pos.y-1
-	}
-	return Position{nextX, nextY}
-}
-
-func changeDir(curDir Direction) Direction {
-	switch curDir {
-	case N:
-		return E
-	case E:
-		return S
-	case S:
-		return W
-	case W:
-		return N
-	}
-
-	return -1
-}
-
 func isOutOfBounds(pos Position, xSize int, ySize int) bool {
 	return (pos.x < 0 || pos.y < 0) || (pos.x >= xSize || pos.y >= ySize)
 }
@@ -95,13 +95,13 @@ func countSteps(matrix *[][]string, firstPos Position) int {
 
 	curPos := firstPos
 	for !isOutOfBounds(curPos, xSize, ySize) {
-		nextPos := getNextPos(direction, curPos)
+		nextPos := direction.getNextPos(curPos)
 		if isOutOfBounds(nextPos, xSize, ySize) {
 			break
 		}
 		nextChar := (*matrix)[nextPos.x][nextPos.y]
 		if nextChar == "#" {
-			direction = changeDir(direction)
+			direction = direction.changeDir()
 			continue
 		}
 
@@ -120,14 +120,14 @@ func searchForLoop(matrix *[][]string, firstPos Position, obstacle Position) boo
 
 	curPos := firstPos
 	for !isOutOfBounds(curPos, xSize, ySize) {
-		nextPos := getNextPos(direction, curPos)
+		nextPos := direction.getNextPos(curPos)
 		if isOutOfBounds(nextPos, xSize, ySize) {
 			break
 		}
 
 		nextChar := (*matrix)[nextPos.x][nextPos.y]
-		if nextChar == "#" || nextPos.equal(obstacle) {
-			direction = changeDir(direction)
+		if nextChar == "#" || nextPos.equals(obstacle) {
+			direction = direction.changeDir()
 			continue
 		}
 
@@ -152,26 +152,21 @@ func coutLoops(matrix *[][]string, firstPos Position) int {
 
 	sumNumOfLoops := map[Position]bool{}
 	direction := Direction(N)
-	sent := map[Position]bool{}
 
 	curPos := firstPos
 	for !isOutOfBounds(curPos, xSize, ySize) {
-		nextPos := getNextPos(direction, curPos)
+		nextPos := direction.getNextPos(curPos)
 		if isOutOfBounds(nextPos, xSize, ySize) {
 			break
 		}
 		nextChar := (*matrix)[nextPos.x][nextPos.y]
 		if nextChar == "#" {
-			direction = changeDir(direction)
+			direction = direction.changeDir()
 			continue
 		}
 
-		if !sent[nextPos] {
-			looped := searchForLoop(matrix, firstPos, nextPos)
-			if looped {
-				sumNumOfLoops[nextPos] = true
-				sent[nextPos] = true
-			}
+		if searchForLoop(matrix, firstPos, nextPos) {
+			sumNumOfLoops[nextPos] = true
 		}
 
 		curPos = nextPos
