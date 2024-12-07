@@ -53,6 +53,7 @@ func generateOperands(numOfOperands int, checkCombineOperator bool) []string {
 }
 
 func calculate(elems []int, operands string, c chan int) {
+	defer wg.Done()
 	result := elems[0]
 	oS := strings.Split(operands, "")
 
@@ -68,7 +69,24 @@ func calculate(elems []int, operands string, c chan int) {
 	}
 
 	c <- result
-	wg.Done()
+}
+
+func calculateNonGo(elems []int, operands string) int {
+	result := elems[0]
+	oS := strings.Split(operands, "")
+
+	for i := 0; i < len(operands); i++ {
+		switch oS[i] {
+		case "*":
+			result *= elems[i+1]
+		case "+":
+			result += elems[i+1]
+		case "|":
+			result, _ = strconv.Atoi(strconv.Itoa(result) + strconv.Itoa(elems[i+1]))
+		}
+	}
+
+	return result
 }
 
 func checkIfPossible(eqs *map[int][]int, checkCombineOperator bool) int {
@@ -105,13 +123,38 @@ func checkIfPossible(eqs *map[int][]int, checkCombineOperator bool) int {
 	return possible
 }
 
+func checkIfPossibleNonGo(eqs *map[int][]int, checkCombineOperator bool) int {
+	sumMe := map[int]bool{}
+	for res, eq := range *eqs {
+		possibleOperands := len(eq) - 1
+		operands := generateOperands(possibleOperands, checkCombineOperator)
+		for _, o := range operands {
+			calc := calculateNonGo(eq, o)
+			if calc == res {
+				sumMe[res] = true
+				break
+			}
+		}
+	}
+
+	possible := 0
+	for el := range sumMe {
+		possible += el
+	}
+
+	return possible
+}
+
 func main() {
 	fmt.Println("AOC 2024 - DAY 7")
 
 	eqs := map[int][]int{}
 	readFile(&eqs, "day7/data.txt")
-	resPlusAndMul := checkIfPossible(&eqs, false)
-	resAll := checkIfPossible(&eqs, true)
+	// resPlusAndMul := checkIfPossible(&eqs, false)
+	// resAll := checkIfPossible(&eqs, true)
+
+	resPlusAndMul := checkIfPossibleNonGo(&eqs, false)
+	resAll := checkIfPossibleNonGo(&eqs, true)
 
 	fmt.Println("Sum of possible combinations with + *: ", resPlusAndMul)
 	fmt.Println("Sum of possible combinations with + * |: ", resAll)
