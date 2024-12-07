@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -12,6 +13,10 @@ func readFile(filePath string) {
 		log.Fatal(err)
 	}
 	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+	}
 }
 
 func main() {
