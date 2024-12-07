@@ -33,26 +33,17 @@ func readFile(eqs *map[int][]int, filePath string) {
 }
 
 func generateOperands(numOfOperands int, checkCombineOperator bool) []string {
-	if numOfOperands == 1 {
-		operands := []string{}
-		operands = append(operands, "*", "+")
-		if checkCombineOperator {
-			operands = append(operands, "|")
-		}
-		return operands
-	}
-
 	os := []string{"+", "*"}
 	if checkCombineOperator {
 		os = append(os, "|")
 	}
 	os2 := os
 
-	for z := 0; z < numOfOperands-1; z++ {
+	for range numOfOperands - 1 {
 		tmp := []string{}
-		for i := 0; i < len(os); i++ {
-			for k := 0; k < len(os2); k++ {
-				tmp = append(tmp, os2[k]+os[i])
+		for _, o := range os {
+			for _, o2 := range os2 {
+				tmp = append(tmp, o2+o)
 			}
 		}
 		os2 = tmp
