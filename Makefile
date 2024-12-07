@@ -23,4 +23,3 @@ init:
 	sed -i 's/X/${DAY}/g' day${DAY}/go/main.go && \
 	echo "Done, day ${DAY} prepared"
 
-
