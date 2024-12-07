@@ -19,3 +19,4 @@ jobs:
         run: |
           echo "Running tests for aoc 2024 🎅"
           make test-all
+        shell: zsh
