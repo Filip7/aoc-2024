@@ -52,7 +52,7 @@ func generateOperands(numOfOperands int, checkCombineOperator bool) []string {
 	return os2
 }
 
-func calculate(elems []int, operands string, c chan int) {
+func calculate(elems []int, operands string, c chan int, excpetedRes int) {
 	defer wg.Done()
 	result := elems[0]
 	oS := strings.Split(operands, "")
@@ -66,12 +66,15 @@ func calculate(elems []int, operands string, c chan int) {
 		case "|":
 			result, _ = strconv.Atoi(strconv.Itoa(result) + strconv.Itoa(elems[i+1]))
 		}
+		if result > excpetedRes {
+			return
+		}
 	}
 
 	c <- result
 }
 
-func calculateNonGo(elems []int, operands string) int {
+func calculateNonGo(elems []int, operands string, excpetedRes int) int {
 	result := elems[0]
 	oS := strings.Split(operands, "")
 
@@ -83,6 +86,9 @@ func calculateNonGo(elems []int, operands string) int {
 			result += elems[i+1]
 		case "|":
 			result, _ = strconv.Atoi(strconv.Itoa(result) + strconv.Itoa(elems[i+1]))
+		}
+		if result > excpetedRes {
+			return result
 		}
 	}
 
@@ -98,7 +104,7 @@ func checkIfPossible(eqs *map[int][]int, checkCombineOperator bool) int {
 		for _, o := range operands {
 			wg.Add(1)
 			go func() {
-				calculate(eq, o, c)
+				calculate(eq, o, c, res)
 			}()
 		}
 
@@ -129,7 +135,7 @@ func checkIfPossibleNonGo(eqs *map[int][]int, checkCombineOperator bool) int {
 		possibleOperands := len(eq) - 1
 		operands := generateOperands(possibleOperands, checkCombineOperator)
 		for _, o := range operands {
-			calc := calculateNonGo(eq, o)
+			calc := calculateNonGo(eq, o, res)
 			if calc == res {
 				sumMe[res] = true
 				break
