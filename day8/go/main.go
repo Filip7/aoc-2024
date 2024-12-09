@@ -34,30 +34,6 @@ func (pos1 Position) equals(pos2 Position) bool {
 	return pos1.x == pos2.x && pos1.y == pos2.y
 }
 
-type Direction int
-
-const (
-	N Direction = iota
-	E
-	S
-	W
-)
-
-func (direction Direction) getNextPos(pos Position) Position {
-	nextX, nextY := -1, -1
-	switch direction {
-	case N:
-		nextX, nextY = pos.x-1, pos.y
-	case E:
-		nextX, nextY = pos.x, pos.y+1
-	case S:
-		nextX, nextY = pos.x+1, pos.y
-	case W:
-		nextX, nextY = pos.x, pos.y-1
-	}
-	return Position{nextX, nextY}
-}
-
 func readFile(matrix *[][]string, charMap *map[rune][]Position, filePath string) {
 	file, err := os.Open(filePath)
 	if err != nil {
